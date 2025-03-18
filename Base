@@ -1,0 +1,68 @@
+import random
+
+common_words = {
+    "pronouns": {"yo": "I", "tú": "you (informal)", "él": "he", "ella": "she", "usted": "you (formal)"},
+    "verbs": {"ser": "to be (permanent)", "estar": "to be (temporary)", "tener": "to have"},
+    "adjectives": {"bueno": "good", "malo": "bad", "grande": "big"},
+    "nouns": {"casa": "house", "coche": "car", "ciudad": "city"},
+    "prepositions": {"en": "in/on", "a": "to/at", "de": "of/from"},
+    "adverbs": {"muy": "very", "poco": "little", "mucho": "a lot"},
+    "question_words": {"qué": "what", "quién": "who", "cómo": "how"},
+    "conjunctions": {"y": "and", "o": "or", "pero": "but"},
+    "expressions": {"hola": "hello", "adiós": "goodbye", "gracias": "thank you"},
+    "numbers": {"uno": "one", "dos": "two", "tres": "three"},
+}
+
+def quiz_user(words):
+    random.shuffle(words)  
+    score = 0  
+
+    for word in words:
+        print(f"What is the meaning of '{word['spanish']}'?")
+        user_answer = input("Your answer: ").strip().lower()
+        correct_answer = word["english"].lower()
+
+        if user_answer == correct_answer:
+            print("Correct!\n")
+            score += 1
+        else:
+            print(f"Not quite. The correct answer is '{word['english']}'.\n")
+
+    print(f"Quiz complete! You got {score} out of {len(words)} correct.")
+
+    retake = input("Would you like to take the quiz again? (yes/no): ").strip().lower()
+    if retake == "yes":
+        quiz_user(words)
+    else:
+        main()
+
+def learn():
+    print("\nHere are some common Spanish words and their meanings:")
+    for category, words in common_words.items():
+        print(f"\nCategory: {category.capitalize()}")
+        for spanish, english in words.items():
+            print(f"{spanish} - {english}")
+    input("\nPress Enter to return to the main menu...")
+    main()
+
+def main():
+    print("\nWelcome to the Spanish Language Flashcards App!")
+    print("1. Learn Spanish words and phrases")
+    print("2. Take a quiz")
+    print("3. Exit the app")
+    option = input("Enter your choice (1/2/3): ")
+
+    if option == "1":
+        learn()
+    elif option == "2":
+        word_list = [{"spanish": k, "english": v} for category in common_words.values() for k, v in category.items()]
+        quiz_user(word_list)
+    elif option == "3":
+        print("Thank you for using the Spanish Language Learning App!")
+        exit()
+    else:
+        print("Invalid input. Please try again.")
+        main()
+
+if __name__ == "__main__":
+    main()

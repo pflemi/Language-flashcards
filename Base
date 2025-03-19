@@ -1,29 +1,131 @@
 import random
 import tkinter as tk
 
-# Spanish words dictionary
-common_words = {
-    "pronouns": {"yo": "I", "tú": "you (informal)", "él": "he", "ella": "she", "usted": "you (formal)"},
-    "verbs": {"ser": "to be (permanent)", "estar": "to be (temporary)", "tener": "to have"},
-    "adjectives": {"bueno": "good", "malo": "bad", "grande": "big"},
-    "nouns": {"casa": "house", "coche": "car", "ciudad": "city"},
-    "prepositions": {"en": "in/on", "a": "to/at", "de": "of/from"},
-    "adverbs": {"muy": "very", "poco": "little", "mucho": "a lot"},
-    "question_words": {"qué": "what", "quién": "who", "cómo": "how"},
-    "conjunctions": {"y": "and", "o": "or", "pero": "but"},
-    "expressions": {"hola": "hello", "adiós": "goodbye", "gracias": "thank you"},
-    "numbers": {"uno": "one", "dos": "two", "tres": "three"},
+# words dictionary
+
+pronouns_and_people = {
+    "Yo": "I", "Tú": "You", "Él": "He", "Ella": "She", 
+    "Usted": "You", "Nosotros": "We", "Vosotros": "You all", 
+    "Ellos": "They", "Ellas": "They", "Ustedes": "You all", 
+    "Mi": "My", "Tu": "Your", "Su": "His/Her/Your/Their", 
+    "Nuestro": "Our", "Mío": "Mine", "Tuyo": "Yours", "Suyo": "His/Hers/Yours/Theirs", 
+    "Gente": "People", "Hombre": "Man", "Mujer": "Woman"
 }
 
-# Convert dictionary into a list for the quiz
+
+common_verbs = {
+    "Ser": "To be", "Estar": "To be", "Tener": "To have", 
+    "Hacer": ["To do", "make"], "Poder": "To be able to", "Decir": ["To say", "tell"], "Ir": "To go", 
+    "Ver": "To see", "Dar": "To give", "Saber": "To know", "Querer": ["To want", "love"], 
+    "Llegar": "To arrive", "Pasar": ["To happen", "pass"], "Deber": ["To owe", "must"], "Poner": "To put", 
+    "Parecer": "To seem", "Quedar": ["To stay", "remain"], "Creer": "To believe", "Hablar": "To speak", 
+    "Llevar": ["To carry", "wear"], "Dejar": "To leave", "Seguir": ["To follow", "continue"], 
+    "Encontrar": "To find", "Llamar": "To call", "Vivir": "To live"
+}
+
+
+common_adjectives = {
+    "Bueno": "Good", "Malo": "Bad", "Grande": "Big", "Pequeño": "Small", "Nuevo": "New", 
+    "Viejo": "Old", "Bonito": "Pretty", "Feo": "Ugly", "Alto": "Tall", "Bajo": "Short", 
+    "Fácil": "Easy", "Difícil": "Difficult", "Rápido": "Fast", "Lento": "Slow", "Feliz": "Happy", 
+    "Triste": "Sad", "Fuerte": "Strong", "Débil": "Weak", "Caliente": "Hot", "Frío": "Cold"
+}
+
+
+common_nouns = {
+    "Casa": "House", "Coche": "Car", "Ciudad": "City", "País": "Country", "Trabajo": "Job", 
+    "Escuela": "School", "Dinero": "Money", "Tiempo": "Time", "Día": "Day", "Noche": "Night", 
+    "Agua": "Water", "Comida": "Food", "Familia": "Family", "Amigo": "Friend", "Amor": "Love", 
+    "Mundo": "World", "Historia": ["Story", "History"], "Verdad": "Truth", "Mentira": "Lie", 
+    "Miedo": "Fear"
+}
+
+
+common_prepositions = {
+    "En": ["In", "On"], "A": "To/At", "De": "Of/From", "Con": "With", "Sin": "Without", 
+    "Sobre": ["About", "On top of"], "Entre": "Between", "Desde": ["From", "Since"], "Hasta": "Until", 
+    "Por": ["By", "For", "Because of"], "Para": ["For", "To"], "Según": "According to", "Durante": "During",
+    "Contra": "Against", "Antes": "Before", "Después": "After", "Bajo": "Under", "Encima": "Above"
+}
+
+
+common_adverbs = {
+    "Muy": "Very", "Poco": "Little", "Mucho": "A lot", "Siempre": "Always", "Nunca": "Never", 
+    "A veces": "Sometimes", "Hoy": "Today", "Mañana": "Tomorrow", "Ayer": "Yesterday", 
+    "Ahora": "Now", "Antes": "Before", "Después": "After", "Aquí": "Here", "Allí": "There", 
+    "Luego": "Later", "Pronto": "Soon", "Todavía": "Still", "Ya": "Already", "Así": ["Like this", "That way"]
+}
+
+
+question_words = {
+    "Qué": "What", "Quién": "Who", "Cómo": "How", "Cuándo": "When", "Dónde": "Where", 
+    "Por qué": "Why", "Cuál": "Which", "Cuánto": "How much"
+}
+
+
+common_conjunctions = {
+    "Y": "And", "O": "Or", "Pero": "But", "Porque": "Because", "Aunque": "Although", "Si": "If"
+}
+
+
+common_expressions = {
+    "Hola": "Hello", "Adiós": "Goodbye", "Por favor": "Please", "Gracias": "Thank you", 
+    "De nada": "You’re welcome", "Lo siento": "I’m sorry", "Perdón": "Excuse me/Sorry", 
+    "Salud": "Bless you", "Te quiero": "I love you", 
+    "Te amo": "I love you", "Buenas noches": "Good night", "Buenos días": "Good morning", 
+    "Buenas tardes": "Good afternoon", "Nos vemos": "See you"
+}
+
+
+numbers = {
+    "Uno": ["1", "one"], "Dos": ["2", "two"], "Tres": ["3", "three"],
+    "Cuatro": ["4", "four"], "Cinco": ["5", "five"], "Seis": ["6", "six"],
+    "Siete": ["7", "seven"], "Ocho": ["8", "eight"], "Nueve": ["9", "nine"],
+    "Diez": ["10", "ten"]
+}
+
+
+common_opposites = {
+    "Día": "Day", "Noche": "Night", "Blanco": "White", "Negro": "Black", "Cerca": "Near", 
+    "Lejos": "Far", "Dentro": "Inside", "Fuera": "Outside", "Abierto": "Open", "Cerrado": "Closed"
+}
+
+
+miscellaneous = {
+    "Sí": "Yes", "No": "No", "Tal vez": "Maybe", "También": "Also", "Tampoco": "Neither", 
+    "Menos": "Less", "Más": "More", "Otro": "Other/Another", "Mismo": "Same", "Algo": "Something", 
+    "Nada": "Nothing", "Alguien": "Someone", "Nadie": "No one", "Todo": "Everything", "Todos": "Everyone", 
+    "Cada": "Each", "Algunos": "Some", "Pocos": "Few", "Cosa": "Thing", "Parte": "Part", 
+    "Lugar": "Place", "Nombre": "Name", "Trabajo": "Work", "Juego": "Game", "Problema": "Problem", 
+    "Idea": "Idea", "Razón": "Reason", "Modo": "Way/Manner", "Forma": "Shape/Form", "Ejemplo": "Example", 
+    "Pregunta": "Question", "Respuesta": "Answer", "Palabra": "Word", "Frase": ["Sentence", "Phrase"], 
+    "Voz": "Voice", "Sonido": "Sound", "Luz": "Light"
+}
+
+
+
+common_words = {
+    "pronouns_and_people": pronouns_and_people,
+    "common_verbs": common_verbs,
+    "common_adjectives": common_adjectives,
+    "common_nouns": common_nouns,
+    "common_prepositions": common_prepositions,
+    "common_adverbs": common_adverbs,
+    "question_words": question_words,
+    "common_conjunctions": common_conjunctions,
+    "common_expressions": common_expressions,
+    "numbers": numbers,
+    "common_opposites": common_opposites,
+    "miscellaneous": miscellaneous
+}
+
 word_list = [{"spanish": k, "english": v, "incorrect_count": 0, "last_seen": 0} for category in common_words.values() for k, v in category.items()]
 random.shuffle(word_list)
 
-# Create the main Tkinter window
 root = tk.Tk()
 root.title("Spanish Flashcards")
 
-# Function to show the main menu
+
 def show_menu():
     menu_label.pack(pady=10)
     learn_button.pack(pady=5)
@@ -31,7 +133,7 @@ def show_menu():
     refresh_button.pack(pady=5)
     exit_button.pack(pady=5)
 
-# Function to hide the main menu
+
 def hide_menu():
     menu_label.pack_forget()
     learn_button.pack_forget()
@@ -39,27 +141,66 @@ def hide_menu():
     refresh_button.pack_forget()
     exit_button.pack_forget()
 
-# Function to display learning section
+
+
+current_learn_index = 0
+showing_translation = False
+
 def learn():
+    global current_learn_index, showing_translation
     hide_menu()
+    current_learn_index = 0
+    showing_translation = False
+    learn_label.config(text="Learning Mode: Flashcards")
     learn_label.pack(pady=10)
-
-    word_text = "\n".join([f"{spanish} - {english}" for category in common_words.values() for spanish, english in category.items()])
-    learn_words.config(text=word_text)
-    
-    learn_words.pack(pady=10)
     return_button.pack(pady=5)
+    show_flashcard()
 
-# Function to handle quiz interaction
+def show_flashcard():
+    global showing_translation
+    showing_translation = False
+    if current_learn_index < len(word_list):
+        spanish_word = word_list[current_learn_index]["spanish"]
+        learn_words.config(text=f"Word: {spanish_word}", font=("Arial", 14))
+        learn_words.pack(pady=10)
+        reveal_button.pack(pady=5)  
+        next_button.pack_forget()   
+    else:
+        learn_words.config(text="You've reviewed all the words!")
+        learn_words.pack(pady=10)
+        reveal_button.pack_forget()
+        next_button.pack_forget()
+        return_button.pack(pady=5)
+
+def reveal_translation():
+    global showing_translation
+    if not showing_translation and current_learn_index < len(word_list):
+        english_translation = word_list[current_learn_index]["english"]
+        learn_words.config(text=f"Translation: {english_translation}", font=("Arial", 14))
+        showing_translation = True
+        next_button.pack(pady=5) 
+
+def next_flashcard():
+    global current_learn_index
+    current_learn_index += 1
+    show_flashcard()
+
+
+score_label = tk.Label(root, text="Correct: 0 | Incorrect: 0", font=("Arial", 10))
+
+
 def start_quiz():
     hide_menu()
-    global current_question, score
+    global current_question, score, incorrect_answers
     current_question = 0
     score = 0
+    incorrect_answers = 0
     quiz_label.pack(pady=10)
+    score_label.config(text="Correct: 0 | Incorrect: 0")  
+    score_label.pack(pady=5) 
     next_question()
 
-# Function to display the next quiz question
+
 def next_question():
     global current_question
     if current_question < len(word_list):
@@ -74,40 +215,68 @@ def next_question():
         submit_button.pack_forget()
         return_button.pack(pady=5)
 
-# Function to check the quiz answer
-def check_answer():
-    global current_question, score
-    user_answer = answer_entry.get().strip().lower()
-    correct_answer = word_list[current_question]["english"].lower()
 
-    if user_answer == correct_answer:
-        feedback_label.config(text="✅ Correct!", fg="green")
-        score += 1
+incorrect_answers = 0
+
+
+def check_answer():
+    global current_question, score, incorrect_answers
+    user_answer = answer_entry.get().strip().lower()
+    correct_answer = word_list[current_question]["english"]
+
+   
+    if isinstance(correct_answer, list):
+        correct_answers = [ans.lower() for ans in correct_answer]  
+        if user_answer in correct_answers:
+            feedback_label.config(text="✅ Correct!", fg="green")
+            score += 1
+        else:
+            feedback_label.config(
+                text=f"❌ Incorrect. The correct answers are: {', '.join(correct_answer)}.",
+                fg="red"
+            )
+            word_list[current_question]["incorrect_count"] += 1
+            incorrect_answers += 1
     else:
-        feedback_label.config(text=f"❌ Incorrect. The correct answer is '{correct_answer}'.", fg="red")
-        word_list[current_question]["incorrect_count"] += 1  # Track incorrect answers
+       
+        if user_answer == correct_answer.lower():
+            feedback_label.config(text="✅ Correct!", fg="green")
+            score += 1
+        else:
+            feedback_label.config(
+                text=f"❌ Incorrect. The correct answer is '{correct_answer}'.",
+                fg="red"
+            )
+            word_list[current_question]["incorrect_count"] += 1
+            incorrect_answers += 1
+
+    # Update the score
+    score_label.config(text=f"Correct: {score} | Incorrect: {incorrect_answers}")
 
     feedback_label.pack(pady=5)
-    word_list[current_question]["last_seen"] = score  # Track when the word was last seen
+    word_list[current_question]["last_seen"] = score
     current_question += 1
-    root.after(1000, next_question)
+    if incorrect_answers >= 5:
+        root.after(500, return_to_menu)
+    else:
+        root.after(1000, next_question)
 
-# Function to revisit wrong answers or words not seen in a while
+
 def refresh_quiz():
     hide_menu()
     global current_question
     current_question = 0
     wrong_answers = [word for word in word_list if word["incorrect_count"] > 0]
-    least_seen = sorted(word_list, key=lambda x: x["last_seen"])  # Sort by least seen words
+    least_seen = sorted(word_list, key=lambda x: x["last_seen"]) 
 
-    # Combine wrong answers and least seen words
-    review_list = wrong_answers + least_seen[:len(word_list)//2]  # Show a mix of wrong answers and least seen words
+    
+    review_list = wrong_answers + least_seen[:len(word_list)//2] 
     random.shuffle(review_list)
     
-    word_list[:] = review_list  # Replace the current word list with the new review list
+    word_list[:] = review_list  
     next_question()
 
-# Function to return to main menu
+
 def return_to_menu():
     learn_label.pack_forget()
     learn_words.pack_forget()
@@ -117,9 +286,25 @@ def return_to_menu():
     submit_button.pack_forget()
     feedback_label.pack_forget()
     return_button.pack_forget()
+    reveal_button.pack_forget()  
+    next_button.pack_forget()    
     show_menu()
 
+# return to main menu
+def return_to_menu():
+    learn_label.pack_forget()
+    learn_words.pack_forget()
+    quiz_label.pack_forget()
+    question_label.pack_forget()
+    answer_entry.pack_forget()
+    submit_button.pack_forget()
+    feedback_label.pack_forget()
+    return_button.pack_forget()
+    reveal_button.pack_forget()  
+    next_button.pack_forget()  
+    show_menu()
 
+# GUI
 menu_label = tk.Label(root, text="Welcome to Spanish Flashcards!", font=("Arial", 14))
 learn_button = tk.Button(root, text="Learn", command=learn)
 quiz_button = tk.Button(root, text="Take Quiz", command=start_quiz)
@@ -130,6 +315,10 @@ exit_button = tk.Button(root, text="Exit", command=root.quit)
 learn_label = tk.Label(root, text="Learning Mode: Here are some words...", font=("Arial", 12))
 learn_words = tk.Label(root, text="", font=("Arial", 10), justify="left")
 
+# nav
+reveal_button = tk.Button(root, text="Reveal Translation", command=reveal_translation)
+next_button = tk.Button(root, text="Next Word", command=next_flashcard)
+
 # Quiz Section
 quiz_label = tk.Label(root, text="Spanish Quiz", font=("Arial", 12))
 question_label = tk.Label(root, text="", font=("Arial", 12))
@@ -137,9 +326,9 @@ answer_entry = tk.Entry(root, font=("Arial", 12))
 submit_button = tk.Button(root, text="Submit", command=check_answer)
 feedback_label = tk.Label(root, text="", font=("Arial", 10))
 
-# Return to Menu Button
+
 return_button = tk.Button(root, text="Return to Menu", command=return_to_menu)
 
-# Run the app
+
 show_menu()
 root.mainloop()

@@ -1,5 +1,7 @@
 import random
+import tkinter as tk
 
+# Spanish words dictionary
 common_words = {
     "pronouns": {"yo": "I", "tú": "you (informal)", "él": "he", "ella": "she", "usted": "you (formal)"},
     "verbs": {"ser": "to be (permanent)", "estar": "to be (temporary)", "tener": "to have"},
@@ -13,56 +15,131 @@ common_words = {
     "numbers": {"uno": "one", "dos": "two", "tres": "three"},
 }
 
-def quiz_user(words):
-    random.shuffle(words)  
-    score = 0  
+# Convert dictionary into a list for the quiz
+word_list = [{"spanish": k, "english": v, "incorrect_count": 0, "last_seen": 0} for category in common_words.values() for k, v in category.items()]
+random.shuffle(word_list)
 
-    for word in words:
-        print(f"What is the meaning of '{word['spanish']}'?")
-        user_answer = input("Your answer: ").strip().lower()
-        correct_answer = word["english"].lower()
+# Create the main Tkinter window
+root = tk.Tk()
+root.title("Spanish Flashcards")
 
-        if user_answer == correct_answer:
-            print("Correct!\n")
-            score += 1
-        else:
-            print(f"Not quite. The correct answer is '{word['english']}'.\n")
+# Function to show the main menu
+def show_menu():
+    menu_label.pack(pady=10)
+    learn_button.pack(pady=5)
+    quiz_button.pack(pady=5)
+    refresh_button.pack(pady=5)
+    exit_button.pack(pady=5)
 
-    print(f"Quiz complete! You got {score} out of {len(words)} correct.")
+# Function to hide the main menu
+def hide_menu():
+    menu_label.pack_forget()
+    learn_button.pack_forget()
+    quiz_button.pack_forget()
+    refresh_button.pack_forget()
+    exit_button.pack_forget()
 
-    retake = input("Would you like to take the quiz again? (yes/no): ").strip().lower()
-    if retake == "yes":
-        quiz_user(words)
-    else:
-        main()
-
+# Function to display learning section
 def learn():
-    print("\nHere are some common Spanish words and their meanings:")
-    for category, words in common_words.items():
-        print(f"\nCategory: {category.capitalize()}")
-        for spanish, english in words.items():
-            print(f"{spanish} - {english}")
-    input("\nPress Enter to return to the main menu...")
-    main()
+    hide_menu()
+    learn_label.pack(pady=10)
 
-def main():
-    print("\nWelcome to the Spanish Language Flashcards App!")
-    print("1. Learn Spanish words and phrases")
-    print("2. Take a quiz")
-    print("3. Exit the app")
-    option = input("Enter your choice (1/2/3): ")
+    word_text = "\n".join([f"{spanish} - {english}" for category in common_words.values() for spanish, english in category.items()])
+    learn_words.config(text=word_text)
+    
+    learn_words.pack(pady=10)
+    return_button.pack(pady=5)
 
-    if option == "1":
-        learn()
-    elif option == "2":
-        word_list = [{"spanish": k, "english": v} for category in common_words.values() for k, v in category.items()]
-        quiz_user(word_list)
-    elif option == "3":
-        print("Thank you for using the Spanish Language Learning App!")
-        exit()
+# Function to handle quiz interaction
+def start_quiz():
+    hide_menu()
+    global current_question, score
+    current_question = 0
+    score = 0
+    quiz_label.pack(pady=10)
+    next_question()
+
+# Function to display the next quiz question
+def next_question():
+    global current_question
+    if current_question < len(word_list):
+        question_label.config(text=f"What is the meaning of '{word_list[current_question]['spanish']}'?")
+        answer_entry.delete(0, tk.END)
+        question_label.pack(pady=10)
+        answer_entry.pack(pady=5)
+        submit_button.pack(pady=5)
     else:
-        print("Invalid input. Please try again.")
-        main()
+        question_label.config(text=f"Quiz complete! You got {score} out of {len(word_list)} correct.")
+        answer_entry.pack_forget()
+        submit_button.pack_forget()
+        return_button.pack(pady=5)
 
-if __name__ == "__main__":
-    main()
+# Function to check the quiz answer
+def check_answer():
+    global current_question, score
+    user_answer = answer_entry.get().strip().lower()
+    correct_answer = word_list[current_question]["english"].lower()
+
+    if user_answer == correct_answer:
+        feedback_label.config(text="✅ Correct!", fg="green")
+        score += 1
+    else:
+        feedback_label.config(text=f"❌ Incorrect. The correct answer is '{correct_answer}'.", fg="red")
+        word_list[current_question]["incorrect_count"] += 1  # Track incorrect answers
+
+    feedback_label.pack(pady=5)
+    word_list[current_question]["last_seen"] = score  # Track when the word was last seen
+    current_question += 1
+    root.after(1000, next_question)
+
+# Function to revisit wrong answers or words not seen in a while
+def refresh_quiz():
+    hide_menu()
+    global current_question
+    current_question = 0
+    wrong_answers = [word for word in word_list if word["incorrect_count"] > 0]
+    least_seen = sorted(word_list, key=lambda x: x["last_seen"])  # Sort by least seen words
+
+    # Combine wrong answers and least seen words
+    review_list = wrong_answers + least_seen[:len(word_list)//2]  # Show a mix of wrong answers and least seen words
+    random.shuffle(review_list)
+    
+    word_list[:] = review_list  # Replace the current word list with the new review list
+    next_question()
+
+# Function to return to main menu
+def return_to_menu():
+    learn_label.pack_forget()
+    learn_words.pack_forget()
+    quiz_label.pack_forget()
+    question_label.pack_forget()
+    answer_entry.pack_forget()
+    submit_button.pack_forget()
+    feedback_label.pack_forget()
+    return_button.pack_forget()
+    show_menu()
+
+
+menu_label = tk.Label(root, text="Welcome to Spanish Flashcards!", font=("Arial", 14))
+learn_button = tk.Button(root, text="Learn", command=learn)
+quiz_button = tk.Button(root, text="Take Quiz", command=start_quiz)
+refresh_button = tk.Button(root, text="Revisit Mistakes/Refresh", command=refresh_quiz)
+exit_button = tk.Button(root, text="Exit", command=root.quit)
+
+# Learning Section
+learn_label = tk.Label(root, text="Learning Mode: Here are some words...", font=("Arial", 12))
+learn_words = tk.Label(root, text="", font=("Arial", 10), justify="left")
+
+# Quiz Section
+quiz_label = tk.Label(root, text="Spanish Quiz", font=("Arial", 12))
+question_label = tk.Label(root, text="", font=("Arial", 12))
+answer_entry = tk.Entry(root, font=("Arial", 12))
+submit_button = tk.Button(root, text="Submit", command=check_answer)
+feedback_label = tk.Label(root, text="", font=("Arial", 10))
+
+# Return to Menu Button
+return_button = tk.Button(root, text="Return to Menu", command=return_to_menu)
+
+# Run the app
+show_menu()
+root.mainloop()

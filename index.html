@@ -15,7 +15,7 @@ pronouns_and_people = {
 
 common_verbs = {
     "Ser": "To be", "Estar": "To be", "Tener": "To have", 
-    "Hacer": ["To do", "make"], "Poder": "To be able to", "Decir": ["To say", "tell"], "Ir": "To go", 
+    "Hacer": "To do/ make", "Poder": "To be able to", "Decir": "To say/ tell", "Ir": "To go", 
     "Ver": "To see", "Dar": "To give", "Saber": "To know", "Querer": ["To want", "love"], 
     "Llegar": "To arrive", "Pasar": ["To happen", "pass"], "Deber": ["To owe", "must"], "Poner": "To put", 
     "Parecer": "To seem", "Quedar": ["To stay", "remain"], "Creer": "To believe", "Hablar": "To speak", 
@@ -199,6 +199,7 @@ def start_quiz():
     score_label.config(text="Correct: 0 | Incorrect: 0")  
     score_label.pack(pady=5) 
     next_question()
+    return_button.pack(pady=5)
 
 
 def next_question():
@@ -229,6 +230,7 @@ def check_answer():
         correct_answers = [ans.lower() for ans in correct_answer]  
         if user_answer in correct_answers:
             feedback_label.config(text="✅ Correct!", fg="green")
+            
             score += 1
         else:
             feedback_label.config(
@@ -290,44 +292,31 @@ def return_to_menu():
     next_button.pack_forget()    
     show_menu()
 
-# return to main menu
-def return_to_menu():
-    learn_label.pack_forget()
-    learn_words.pack_forget()
-    quiz_label.pack_forget()
-    question_label.pack_forget()
-    answer_entry.pack_forget()
-    submit_button.pack_forget()
-    feedback_label.pack_forget()
-    return_button.pack_forget()
-    reveal_button.pack_forget()  
-    next_button.pack_forget()  
-    show_menu()
 
-# GUI
+# GUI(buttons)
 menu_label = tk.Label(root, text="Welcome to Spanish Flashcards!", font=("Arial", 14))
-learn_button = tk.Button(root, text="Learn", command=learn)
-quiz_button = tk.Button(root, text="Take Quiz", command=start_quiz)
-refresh_button = tk.Button(root, text="Revisit Mistakes/Refresh", command=refresh_quiz)
-exit_button = tk.Button(root, text="Exit", command=root.quit)
+learn_button = tk.Button(root, font=("ATC Maple", 10), text="Learn", command=learn)
+quiz_button = tk.Button(root, font=("ATC Maple", 10), text="Take Quiz", command=start_quiz)
+refresh_button = tk.Button(root, font=("ATC Maple", 10), text="Revisit Mistakes/Refresh", command=refresh_quiz)
+exit_button = tk.Button(root, font=("ATC Maple", 10), text="Exit", command=root.quit)
 
 # Learning Section
-learn_label = tk.Label(root, text="Learning Mode: Here are some words...", font=("Arial", 12))
-learn_words = tk.Label(root, text="", font=("Arial", 10), justify="left")
+learn_label = tk.Label(root, text="Learning Mode: Here are some words...", font=("ATC Maple", 12))
+learn_words = tk.Label(root, text="", font=("ATC Maple", 10), justify="left")
 
 # nav
 reveal_button = tk.Button(root, text="Reveal Translation", command=reveal_translation)
-next_button = tk.Button(root, text="Next Word", command=next_flashcard)
+next_button = tk.Button(root, font=("ATC Maple", 10), text="Next Word", command=next_flashcard)
 
 # Quiz Section
-quiz_label = tk.Label(root, text="Spanish Quiz", font=("Arial", 12))
-question_label = tk.Label(root, text="", font=("Arial", 12))
-answer_entry = tk.Entry(root, font=("Arial", 12))
-submit_button = tk.Button(root, text="Submit", command=check_answer)
-feedback_label = tk.Label(root, text="", font=("Arial", 10))
+quiz_label = tk.Label(root, text="Spanish Quiz", font=("ATC Garnet", 16))
+question_label = tk.Label(root, text="", font=("ATC Maple", 14))
+answer_entry = tk.Entry(root, font=("ATC Maple", 12))
+submit_button = tk.Button(root, text="Submit", command=check_answer, font=("ATC Maple", 12))
+feedback_label = tk.Label(root, text="", font=("ATC Garnet", 10))
 
 
-return_button = tk.Button(root, text="Return to Menu", command=return_to_menu)
+return_button = tk.Button(root, text="Return to Menu", font=("ATC Maple", 8), command=return_to_menu)
 
 
 show_menu()
